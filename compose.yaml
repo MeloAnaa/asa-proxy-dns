@@ -38,7 +38,14 @@ services:
     container_name: asa-server2
     networks:
       - asa-network
-
+      
+  Maria:
+    build:
+      context:  ./Maria
+      dockerfile: Dockerfile
+    container_name: Maria
+    networks:
+      - asa-network
  
 networks:
   asa-network:
