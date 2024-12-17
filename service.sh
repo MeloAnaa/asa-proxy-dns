@@ -14,9 +14,13 @@ start_containers() {
   echo "Iniciando o contêiner ASA Server 2..."
   docker run -d --name asa-server2 --network asa-network asa-server
 
+
+
   echo "Iniciando o contêiner Maria..."
   docker build -t Maria ./Maria
-  docker run -d --name Maria --network asa-network 
+  docker run -d --name Maria --network asa-network Maria
+
+
 
   echo "Iniciando o contêiner Proxy..."
   docker build -t nginx-proxy ./proxy
@@ -29,8 +33,8 @@ start_containers() {
 stop_containers() {
   echo "Parando os contêineres manualmente..."
 
-  docker stop nginx-proxy asa-server2 asa-server dns
-  docker rm nginx-proxy asa-server2 asa-server dns
+  docker stop nginx-proxy asa-server2 asa-server Maria dns
+  docker rm nginx-proxy asa-server2 asa-server Maria dns
   docker network rm asa-network || true
 
   echo "Todos os contêineres foram parados e removidos."
@@ -40,16 +44,13 @@ remove_all() {
   echo "Excluindo contêineres, imagens e volumes..."
 
   # Parar e remover contêineres se ainda estiverem ativos
-  docker stop nginx-proxy asa-server2 asa-server dns 2>/dev/null || true
-  docker rm nginx-proxy asa-server2 asa-server dns 2>/dev/null || true
+  docker stop nginx-proxy asa-server2 asa-server Maria dns 2>/dev/null || true
+  docker rm nginx-proxy asa-server2 asa-server Maria dns 2>/dev/null || true
 
   docker network rm asa-network 2>/dev/null || true
 
   # Remover imagens
-  docker rmi dns asa-server nginx-proxy 2>/dev/null || true
-
-  # Limpar volumes órfãos
-  docker volume prune -f
+  docker rmi dns asa-server Maria nginx-proxy 2>/dev/null || true
 
   echo "Todos os contêineres, imagens e volumes foram removidos."
 }
