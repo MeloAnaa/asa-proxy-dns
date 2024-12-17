@@ -14,6 +14,10 @@ start_containers() {
   echo "Iniciando o contêiner ASA Server 2..."
   docker run -d --name asa-server2 --network asa-network asa-server
 
+  echo "Iniciando o contêiner Maria..."
+  docker build -t Maria ./Maria
+  docker run -d --name Maria --network asa-network 
+
   echo "Iniciando o contêiner Proxy..."
   docker build -t nginx-proxy ./proxy
   docker run -d --name nginx-proxy --network asa-network -p 80:80 nginx-proxy
