@@ -39,11 +39,11 @@ services:
     networks:
       - asa-network
       
-  Maria:
+  maria:
     build:
-      context:  ./Maria
+      context:  ./maria
       dockerfile: Dockerfile
-    container_name: Maria
+    container_name: maria
     networks:
       - asa-network
     ports:
@@ -52,6 +52,9 @@ services:
 networks:
   asa-network:
     driver: bridge
+
+
+
 
 
 
