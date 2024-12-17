@@ -9,7 +9,7 @@ start_containers() {
   echo "Iniciando o contêiner ASA Server 1..."
   docker build -t asa-server ./asa-server
   docker network create asa-network || true
-  docker run -d --name asa-server --network asa-network asa-server
+  docker run -d -p 80:80 asa-server --network asa-network asa-server
 
   echo "Iniciando o contêiner ASA Server 2..."
   docker run -d --name asa-server2 --network asa-network asa-server
@@ -18,7 +18,7 @@ start_containers() {
 
   echo "Iniciando o contêiner Maria..."
   docker build -t Maria ./Maria
-  docker run -d --name Maria --network asa-network Maria
+  docker run -d -p 8080:80 nginx-maria --network asa-network Maria
 
 
 
@@ -87,3 +87,4 @@ while true; do
       ;;
   esac
 done
+
